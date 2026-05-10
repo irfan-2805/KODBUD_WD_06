@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SnapGrid — Photo Gallery</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #f4f6fb; }
+
+    .navbar { background: #1a2744; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+    .brand { color: #fff; font-size: 18px; font-weight: 600; }
+    .brand span { color: #4fc3f7; }
+    .nav-links a { color: #ccd6f6; font-size: 14px; text-decoration: none; margin-left: 18px; }
+    .nav-links a:hover { color: #fff; }
+
+    .hero { background: #1a2744; color: #fff; text-align: center; padding: 2.5rem 2rem; }
+    .hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; }
+    .hero p { color: #a8bde0; font-size: 15px; }
+
+    .filter-bar { display: flex; justify-content: center; gap: 10px; padding: 1.5rem 1rem; flex-wrap: wrap; }
+    .filter-btn { background: #fff; border: 1px solid #dde3f0; border-radius: 20px; padding: 6px 18px; font-size: 13px; color: #3c4043; cursor: pointer; transition: all 0.2s; }
+    .filter-btn:hover, .filter-btn.active { background: #1a2744; color: #fff; border-color: #1a2744; }
+
+    .gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 1000px; margin: 0 auto; padding: 0 1.5rem 2.5rem; }
+
+    .gallery-item { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #e0e7f0; position: relative; cursor: pointer; }
+    .gallery-item img { width: 100%; height: 200px; object-fit: cover; display: block; transition: transform 0.3s; }
+    .gallery-item:hover img { transform: scale(1.05); }
+
+    .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(15,31,69,0.82); color: #fff; padding: 10px 14px; transform: translateY(100%); transition: transform 0.3s; }
+    .gallery-item:hover .overlay { transform: translateY(0); }
+    .overlay h3 { font-size: 13px; font-weight: 600; margin-bottom: 2px; }
+    .overlay p { font-size: 11px; color: #a8bde0; }
+
+    .tag { position: absolute; top: 10px; left: 10px; background: #1a2744; color: #4fc3f7; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; letter-spacing: 0.5px; }
+
+    .footer { background: #1a2744; color: #a8bde0; text-align: center; padding: 1.2rem; font-size: 13px; margin-top: 1rem; }
+
+    @media (max-width: 600px) {
+      .gallery { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (min-width: 601px) and (max-width: 900px) {
+      .gallery { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="brand">Snap<span>Grid</span></div>
+    <div class="nav-links">
+      <a href="#">Gallery</a>
+      <a href="#">Collections</a>
+      <a href="#">About</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <h1>Photo Gallery</h1>
+    <p>A curated collection of beautiful photography from around the world.</p>
+  </div>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterGallery('all', this)">All</button>
+    <button class="filter-btn" onclick="filterGallery('nature', this)">Nature</button>
+    <button class="filter-btn" onclick="filterGallery('city', this)">City</button>
+    <button class="filter-btn" onclick="filterGallery('architecture', this)">Architecture</button>
+    <button class="filter-btn" onclick="filterGallery('people', this)">People</button>
+  </div>
+
+  <div class="gallery" id="gallery">
+
+    <div class="gallery-item" data-category="nature">
+      <span class="tag">Nature</span>
+      <img src="https://picjumbo.com/wp-content/uploads/beautiful-nature-scenery-free-photo-2210x1473.jpg" alt="Enchanted Forest" />
+      <div class="overlay"><h3>Enchanted Forest</h3><p>Photo by Alex Rivera</p></div>
+    </div>
+
+    <div class="gallery-item" data-category="city">
+      <span class="tag">City</span>
+      <img src="https://wallup.net/wp-content/uploads/2017/11/17/233110-New_York_City-USA-city-cityscape-reflection-skyscraper-skyline.jpg" alt="Urban Lights" />
+      <div class="overlay"><h3>New York City</h3><p>Photo by Priya Shah</p></div>
+    </div>
+
+    <div class="gallery-item" data-category="architecture">
+      <span class="tag">Architecture</span>
+      <img src="https://eiffeltower-tickets.tours/wp-content/uploads/2024/09/architecture-of-eiffel-tower-3.jpg" alt="Modern Lines" />
+      <div class="overlay"><h3>Eiffel Tower</h3><p>Photo by James Wu</p></div>
+    </div>
+
+    <div class="gallery-item" data-category="nature">
+      <span class="tag">Nature</span>
+      <img src="https://i0.wp.com/picjumbo.com/wp-content/uploads/beautiful-nature-mountain-scenery-with-flowers-free-photo.jpg?w=2210&quality=70" alt="Ocean Horizon" />
+      <div class="overlay"><h3>Sunset Garden</h3><p>Photo by Sara Lee</p></div>
+    </div>
+
+    <div class="gallery-item" data-category="people">
+      <span class="tag">People</span>
+      <img src="https://wallpapercave.com/wp/wp3720070.jpg" alt="City Souls" />
+      <div class="overlay"><h3>Happy Souls</h3><p>Photo by Ravi Menon</p></div>
+    </div>
+
+    <div class="gallery-item" data-category="architecture">
+      <span class="tag">Architecture</span>
+      <img src="https://tse1.mm.bing.net/th/id/OIP.feav11hythGqXFNGbBOrdwHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Golden Bridge" />
+      <div class="overlay"><h3>Ancient Greek</h3><p>Photo by Lena Park</p></div>
+    </div>
+
+    <div class="gallery-item" data-category="nature">
+      <span class="tag">Nature</span>
+      <img src="https://tse2.mm.bing.net/th/id/OIP.121bc5HlxDTzFnuRFzpQlwHaE8?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Mountain Peak" />
+      <div class="overlay"><h3>Mountain Peak</h3><p>Photo by Arjun Das</p></div>
+    </div>
+
+    <div class="gallery-item" data-category="city">
+      <span class="tag">City</span>
+      <img src="https://wallup.net/wp-content/uploads/2019/09/291193-chicago-city-sunset.jpg" alt="Street Stories" />
+      <div class="overlay"><h3>Chicago City</h3><p>Photo by Mia Chen</p></div>
+    </div>
+
+    <div class="gallery-item" data-category="nature">
+      <span class="tag">Nature</span>
+      <img src="https://picsum.photos/seed/sunset9/400/300" alt="Golden Hour" />
+      <div class="overlay"><h3>Golden Hour</h3><p>Photo by Tom Ike</p></div>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    &copy; 2026 SnapGrid &nbsp;·&nbsp; Built with HTML &amp; CSS &nbsp;·&nbsp; Hyderabad, India
+  </footer>
+
+  <script>
+    function filterGallery(category, btn) {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.gallery-item').forEach(item => {
+        if (category === 'all' || item.dataset.category === category) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>
